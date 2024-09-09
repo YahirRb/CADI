@@ -1,4 +1,4 @@
-export const StudentModel = {
+export const AlumnoModel = {
     curp: '',          // Clave Única de Registro de Población (PK)
     nombre: '',
     apellidos: '',

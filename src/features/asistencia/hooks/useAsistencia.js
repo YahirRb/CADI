@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { resgistroAlumno } from '../services/alumnoService';
+import { resgistroAsistencia } from '../services/asistenciaService';
 
-export const useStudent = () => {
+export const useAsistencia = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const registro = async (datosAlumno) => {
+  const registro = async (datosAsistencia) => {
     setLoading(true);
     try {
-      await resgistroAlumno(datosAlumno);
+      await resgistroAsistencia(datosAsistencia);
+      console.log('Asistencia registrada:', datosAsistencia);
       // Maneja la respuesta, como redirigir al usuario o mostrar un mensaje de éxito
     } catch (err) {
       setError(err.message);

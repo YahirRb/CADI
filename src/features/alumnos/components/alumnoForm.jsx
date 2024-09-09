@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import  { useState } from 'react';
 import { useStudent } from '../hooks/useAlumno';
 
-const StudentForm = () => {
+const AlumnoForm = () => {
   const [curp, setCurp] = useState('');
   const [nombre, setNombre] = useState('');
   const [apellidos, setApellidos] = useState('');
@@ -9,16 +9,16 @@ const StudentForm = () => {
   const [correo, setCorreo] = useState('');
   const [telefono, setTelefono] = useState('');
   const [fechaNacimiento, setFechaNacimiento] = useState('');
-  const { register, loading, error } = useStudent();
+  const { registro, loading, error } = useStudent();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    register({ curp, nombre, apellidos, tutor, correo, telefono, fechaNacimiento });
+    registro({ curp, nombre, apellidos, tutor, correo, telefono, fechaNacimiento });
   };
 
   return (
     <div>
-      <h2>Register Student</h2>
+      <h2>Registro de alumno</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label>CURP:</label>
@@ -49,7 +49,7 @@ const StudentForm = () => {
           <input type="date" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} required />
         </div>
         <button type="submit" disabled={loading}>
-          {loading ? 'Registering...' : 'Register'}
+          {loading ? 'Registrando...' : 'Registrar'}
         </button>
         {error && <p>Error: {error}</p>}
       </form>
@@ -57,4 +57,4 @@ const StudentForm = () => {
   );
 };
 
-export default StudentForm;
+export default AlumnoForm;

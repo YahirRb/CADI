@@ -1,9 +1,9 @@
 import  supabase   from '../../../supabaseClient';
 
-export const resgistroAlumno = async (datosAlumno) => {
+export const resgistroAsistencia = async (datosAlumno) => {
   try {
     const { data, error } = await supabase
-      .from('Alumnos')
+      .from('Asistencia')
       .insert([datosAlumno]);
 
     if (error) {
