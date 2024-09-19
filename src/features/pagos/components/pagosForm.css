@@ -1,0 +1,61 @@
+
+.form-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    background-color: #f4f6f8; /* Fondo ligeramente gris para contrastar con el color principal */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    color: #3A428D; /* Color principal para el título */
+    margin-bottom: 20px;
+  }
+  
+  .text-field {
+    margin-bottom: 16px; /* Espaciado entre los campos de texto */
+  }
+  
+  .text-field .MuiInputLabel-root {
+    color: #3A428D; /* Color del label */
+  }
+  
+  .text-field .MuiInputBase-root {
+    border-radius: 4px;
+  }
+  
+  .text-field .MuiInputBase-root.Mui-focused {
+    border-color: #3A428D; /* Color del borde del campo de texto cuando está enfocado */
+  }
+  .button {
+    background-color: #3A428D; /* Color principal para el botón */
+    color: #ffffff; /* Texto blanco en el botón */
+    width: 125px; /* Ancho fijo del botón */
+    padding: 12px 20px; /* Tamaño del botón */
+    font-size: 14px; /* Tamaño de fuente */
+    border-radius: 4px; /* Bordes redondeados */
+    border: none; /* Sin borde */
+    display: inline-block; /* Asegura que el botón se trate como un bloque */
+  }
+  
+  .button:hover {
+    background-color: #2C3A6B; /* Color más oscuro para el hover */
+  }
+  
+  /* Contenedor del botón centrado */
+  .buttonContainer {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente el contenido */
+    align-items:center;
+    margin-top: 16px; /* Espacio superior opcional */
+  }
+  .alert {
+    margin-top: 20px; /* Espaciado superior para la alerta */
+  }
+  
+  /* Ajustes de diseño para el spinner de carga */
+  .spinner {
+    color: #3A428D; /* Color del spinner */
+  }
+  

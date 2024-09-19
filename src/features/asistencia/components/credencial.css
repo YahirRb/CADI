@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+:root {
+  --primary-color: #3C428E;
+  --secondary-color: #E7333C;
+}
+
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Ubuntu";
+  background-color: #fdfdfd;
+}
+
+main {
+  width: 100vw;
+  height: 100vh;
+  padding: 25px;
+  box-sizing: border-box;
+}
+
+#root {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  height: 100%;
+}
+
+#cred_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 250px;
+  aspect-ratio: 10/15;
+  border: 1px solid #333333AA;
+  border-radius: 25px;
+  background-color: #FFFFFF;
+  box-shadow: -5px 5px 10px 1px #333333AA;
+  overflow: hidden;
+  position: relative;
+}
+
+.cred_data {
+  z-index: 10;
+}
+
+#cred_logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75%;
+  aspect-ratio: 5/1;
+  box-sizing: border-box;
+}
+
+#cred_logo p {
+  margin: 0;
+  background-color: white;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+
+#cred_logo img {
+  width: 100%;
+  object-fit: fill;
+}
+
+#cred_imagen {
+  width: 30%;
+  aspect-ratio: 1/1;
+}
+
+#cred_imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+#cred_nombre {
+  font-size: small;
+  text-align: center;
+}
+
+#cred_qr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;               /* Mantén el 50% del ancho del contenedor */
+  aspect-ratio: 1/1;        /* Relación de aspecto cuadrada */
+  padding: 10px;            /* Añade un poco de espacio alrededor */
+  box-sizing: border-box;    /* Asegura que el padding se incluya en el tamaño */
+}
+.cred_data svg {
+  width: 100%;              /* Ajusta el tamaño del código QR al tamaño del contenedor */
+  height: 100%;             /* Asegura que sea cuadrado */
+}
+
+#cred_qr img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.cred_decoracion {
+  position: absolute;
+}
+
+#cred_rect_rojo {
+  top: -10%;
+  left: -15%;
+  width: 30%;
+  height: 100%;
+  transform: rotate(17deg);
+  background-color: var(--secondary-color);
+  z-index: 2;
+}
+
+#cred_rect_sup {
+  top: 6%;
+  left: -25%;
+  width: 30%;
+  height: 30%;
+  transform: rotate(45deg) skew(0deg, 25deg);
+  background-color: var(--primary-color);
+  z-index: 4;
+}
+
+#cred_linea_roja {
+  top: -10%;
+  left: 17%;
+  width: 5%;
+  height: 110%;
+  transform: rotate(17deg);
+  background-color: var(--secondary-color);
+  z-index: 3;
+}
+
+#cred_triangulo_fondo {
+  left: -15%;
+  bottom: -25%;
+  width: 50%;
+  height: 75%;
+  transform: rotate(320deg);
+  background-color: var(--primary-color);
+  z-index: 1;
+}

@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { useClase } from '../hooks/useClases'; // Asume que tendrás un hook similar
+import { useClase } from '../hooks/useClases'; 
+import { Grid, TextField, Button, Typography, CircularProgress, Alert } from '@mui/material';
+
 
 const ClaseForm = () => {
     const [nombre, setNombre] = useState('');
@@ -18,71 +20,87 @@ const ClaseForm = () => {
     };
   
     return (
-      <div>
-        <h2>Registro de Clase</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Nombre:</label>
-            <input 
-              type="text" 
-              value={nombre} 
-              onChange={(e) => setNombre(e.target.value)} 
-              required 
+      <div className="form-container">
+      <Typography variant="h4" gutterBottom className="title">Registro de Clase</Typography>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Nombre"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              required
+              fullWidth
+              className="text-field"
             />
-          </div>
-          <div>
-            <label>Descripción:</label>
-            <input 
-              type="text" 
-              value={descripcion} 
-              onChange={(e) => setDescripcion(e.target.value)} 
-              required 
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Descripción"
+              value={descripcion}
+              onChange={(e) => setDescripcion(e.target.value)}
+              required
+              fullWidth
+              className="text-field"
             />
-          </div>
-          <div>
-            <label>Cupo:</label>
-            <input 
-              type="number" 
-              value={cupo} 
-              onChange={(e) => setCupo(e.target.value)} 
-              required 
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Cupo"
+              type="number"
+              value={cupo}
+              onChange={(e) => setCupo(e.target.value)}
+              required
+              fullWidth
+              className="text-field"
             />
-          </div>
-          <div>
-            <label>Costo:</label>
-            <input 
-              type="number" 
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Costo"
+              type="number"
               step="0.01"
-              value={costo} 
-              onChange={(e) => setCosto(e.target.value)} 
-              required 
+              value={costo}
+              onChange={(e) => setCosto(e.target.value)}
+              required
+              fullWidth
+              className="text-field"
             />
-          </div>
-          <div>
-            <label>Días:</label>
-            <input 
-              type="text" 
-              value={dias} 
-              onChange={(e) => setDias(e.target.value)} 
-              required 
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Días"
+              value={dias}
+              onChange={(e) => setDias(e.target.value)}
+              required
+              fullWidth
+              className="text-field"
               placeholder="Ingresa días separados por comas"
             />
-          </div>
-          <div>
-            <label>Horario:</label>
-            <input 
-              type="text" 
-              value={horario} 
-              onChange={(e) => setHorario(e.target.value)} 
-              required 
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Horario"
+              value={horario}
+              onChange={(e) => setHorario(e.target.value)}
+              required
+              fullWidth
+              className="text-field"
             />
-          </div>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Registrando...' : 'Registrar'}
-          </button>
-          {error && <p>Error: {error}</p>}
-        </form>
-      </div>
+          </Grid>
+          <Grid item xs={12} className="buttonContainer">
+            <Button type="submit" variant="contained" color="primary" className="button" disabled={loading}>
+              {loading ? <CircularProgress size={24} className="spinner" /> : 'Registrar'}
+            </Button>
+          </Grid>
+          {error && (
+            <Grid item xs={12}>
+              <Alert severity="error" className="alert">{error}</Alert>
+            </Grid>
+          )}
+        </Grid>
+      </form>
+    </div>
     );
   };
   

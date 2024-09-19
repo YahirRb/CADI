@@ -1,0 +1,60 @@
+/* tablaAlumnos.css */
+.table-container-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Alinea el contenido al centro horizontalmente */
+  padding: 16px; /* Espaciado general */
+  margin-top: -20px;
+}
+
+.table-container {
+  width: 100%;
+  max-width: 1200px; /* Tamaño máximo de la tabla */
+  margin: 0 auto; /* Centra la tabla dentro del contenedor */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+}
+
+.table-header {
+  background-color: #1976d2;
+}
+
+.table-head-cell {
+  padding: 12px 16px;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: left;
+}
+
+.table-body-wrapper {
+  max-height: 400px; /* Ajusta esta altura según sea necesario */
+  overflow-y: auto; /* Permite el desplazamiento vertical */
+}
+.table-row {
+  cursor: pointer; /* Cambia el cursor para indicar que la fila es clickeable */
+}
+
+.table-row:hover {
+  background-color: #f0f0f0; /* Color de fondo al pasar el ratón */
+}
+ 
+
+.table-cell {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+}
+
+.registrar-alumno {
+  background-color: #3A428D; /* Color del botón */
+  margin-top: 20px; /* Espacio entre la tabla y el botón */
+  color: #ffffff; /* Color del texto del botón */
+  width: 200px; /* Ajusta el ancho del botón */
+  padding: 8px; /* Ajusta el padding del botón */
+  font-size: 14px; /* Tamaño de fuente del botón */
+  border-radius: 4px; /* Bordes redondeados */
+}
+
+.registrar-alumno:hover {
+  background-color: #2C3A6B; /* Color más oscuro para el hover */
+}

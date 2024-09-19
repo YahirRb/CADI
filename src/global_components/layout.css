@@ -1,0 +1,104 @@
+.menu_main {
+    display: flex;
+    flex-grow: 1;
+    box-sizing: content-box;
+}
+
+.navbar {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 39px;
+    padding: 10px;
+    box-sizing: content-box;
+    border-right: 1px solid var(--color_principal);
+    white-space: nowrap;
+    transition: width 0.2s linear;
+}
+
+.navbar_item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 7px 0;
+    padding-left: 6px;
+    border-radius: 25px;
+    color: var(--color_principal);
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.2s ease-in;
+}
+
+.navbar_item i {
+    font-size: 18px;
+}
+
+.navbar_item p {
+    margin: 0;
+}
+
+.navbar_item:hover {
+    background-color: var(--color_principal);
+    color: var(--color_fondo);
+}
+
+.titulo_menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    padding: 0 25px;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--color_principal);
+}
+
+.contenido_menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+/*
+.cuerpo_menu {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}*/
+
+.cuerpo_menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: baseline;
+    width: 100%;
+    height: 100%; /* Asegura que ocupe todo el espacio disponible */
+    max-height: calc(100vh - 70px); /* Ajusta la altura máxima, restando la altura del encabezado */
+    padding: 20px;
+    overflow-y: auto; /* Habilita el desplazamiento vertical */
+    box-sizing: border-box; /* Asegura que el padding se incluya en el tamaño total */
+}
+
+.cuerpo_menu::-webkit-scrollbar {
+    width: 10px;
+}
+
+.cuerpo_menu::-webkit-scrollbar-thumb {
+    background-color: var(--color_principal);
+}
+
+.cuerpo_menu::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color_secundario);
+}
+
+.cuerpo_menu::-webkit-scrollbar-track {
+    background-color: var(--color_fondo);
+}
+
+.opcion_seleccionada {
+    background-color: var(--color_principal);
+    color: var(--color_fondo);
+}

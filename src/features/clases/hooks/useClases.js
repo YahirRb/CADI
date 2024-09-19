@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { registrarClase } from '../services/claseService'; // Define el servicio para registrar clases
+import { useState, useEffect } from 'react';
+import { registrarClase,obtenerClases } from '../services/claseService'; // Define el servicio para registrar clases
 
 export const useClase = () => {
+  const [clases, setClases] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -18,6 +19,24 @@ export const useClase = () => {
       setLoading(false);
     }
   };
+  const fetchClases = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await obtenerClases();
+      setClases(data);
+    } catch (err) {
+      setError('Error al obtener las clases');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  return { registroClase, loading, error };
+  // Efecto para cargar las clases cuando el componente se monta
+  useEffect(() => {
+    fetchClases();
+  }, []);
+
+  return { clases, registroClase,fetchClases, loading, error };
 };

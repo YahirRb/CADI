@@ -16,3 +16,20 @@ export const registrarClase = async (datosClase) => {
     throw error;
   }
 };
+
+export const obtenerClases = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('Clase')
+      .select('idClase, nombre,costo, dias, horario, turno'); // Selecciona los campos que necesitas
+    
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};

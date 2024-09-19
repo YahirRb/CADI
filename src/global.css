@@ -1,0 +1,68 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&family=Oswald&display=swap"); */
+
+@font-face {
+    font-family: "Fira sans";
+    src: url("/assets/fonts/FiraSans-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Oswald";
+    src: url("/assets/fonts/Oswald-Regular.ttf");
+}
+
+:root {
+    --color_principal: #3A428D;
+    --color_secundario: #b121ff;
+    --color_fondo: #fcfcfc;
+    --color_texto: #1a1a1a;
+    --principal_claro: #d23a69;
+    --principal_oscuro: #d2b9c1;
+    --secundario_claro: #b121ff;
+    --secundario_oscuro: #bb46ff;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color_fondo);
+    font-family: "Fira Sans", Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+}
+
+#root {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    box-sizing: content-box;
+    margin: 0;
+    overflow: hidden;
+}
+
+.titulos {
+    margin: 0;
+    font-family: "Oswald", Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+}
+
+.enlaces {
+    color: var(--color_principal);
+    text-decoration: none;
+}
+
+.enlaces:hover {
+    color: var(--color_secundario);
+    text-decoration: underline;
+}
+
+.mensaje_error {
+    color: red;
+}
