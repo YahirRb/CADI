@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
             name='PaqueteClases',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('fecha_inscripcion', models.DateField(blank=True, null=True)),
+                ('fechaInscripcion', models.DateField(blank=True, null=True)),
                 ('id_clase', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='clases.clase')),
                 ('id_paquete', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='clases.paquete')),
             ],

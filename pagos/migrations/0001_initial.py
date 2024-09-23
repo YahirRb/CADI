@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Pago',
             fields=[
-                ('id_pago', models.BigAutoField(primary_key=True, serialize=False)),
+                ('idPago', models.BigAutoField(primary_key=True, serialize=False)),
                 ('fecha_pago', models.DateField(blank=True, null=True)),
                 ('pago_realizado', models.DateField(blank=True, null=True)),
                 ('monto', models.DecimalField(blank=True, decimal_places=2, max_digits=12, null=True)),

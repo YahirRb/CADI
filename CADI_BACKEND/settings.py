@@ -9,8 +9,8 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
-from pathlib import Path
+import os
+from pathlib import Path 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,13 +20,51 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-yh$*_zxeko1h3mdc%x%*0(0)16#h#!ax@ixs(kvr9(epncgi8#'
+SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
+#SECRET_KEY = 'django-insecure-yh$*_zxeko1h3mdc%x%*0(0)16#h#!ax@ixs(kvr9(epncgi8#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = 'RENDER' not in os.environ
+#DEBUG = True
 ALLOWED_HOSTS = []
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    
+#ALLOWED_HOSTS = ['*']
 
+
+import logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'tareas.log'),  # Ruta del archivo de log
+            'formatter': 'verbose',  # Opcional: puedes definir un formateador
+        },
+    },
+    'loggers': {
+        'pagos': {  # Asegúrate de que este nombre coincida
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 # Application definition
 
@@ -38,13 +76,25 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
+    'corsheaders',
     'alumnos',
     'clases',
-    'pagos'
-]
+    'pagos',
+    'channels',
+    'login',
 
+]
+ 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Verifica esta línea
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -52,8 +102,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-ROOT_URLCONF = 'CADI_BACKEND_BACKEND_BACKEND.urls'
+ROOT_URLCONF = 'CADI_BACKEND.urls'
 
 TEMPLATES = [
     {
@@ -70,21 +119,46 @@ TEMPLATES = [
         },
     },
 ]
+ASGI_APPLICATION = 'CADI_BACKEND.asgi.application'
 
-WSGI_APPLICATION = 'CADI_BACKEND_BACKEND.wsgi.application'
+WSGI_APPLICATION = 'CADI_BACKEND.wsgi.application'
+CORS_ALLOW_ALL_ORIGINS = True
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("rediss://red-cr0mani3esus73ak8q10:F8mGyzFOZcA9UMAhTnADf9jo3HvV3gSR@oregon-redis.render.com:6379")],
+        },
+    }
+}
 
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',        # Nombre de la base de datos
+        'USER': 'postgres.hzgjuagwofztyqtsvrgt',              # Nombre de usuario
+        'PASSWORD': 'iNoyAtMa9apZkCuO',              # Contraseña del usuario
+        'HOST': 'aws-0-us-east-1.pooler.supabase.com',                  # Dirección del servidor de la base de datos
+        'PORT': '6543',                       # Puerto (5432 es el puerto por defecto para PostgreSQL)
+    }
+}
 
+ 
+
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
+"""
+# Otras configuraciones de Django...
+ 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -118,8 +192,17 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+STATIC_URL = '/static/'
 
-STATIC_URL = 'static/'
+# This production code might break development mode, so we check whether we're in DEBUG mode
+if not DEBUG:
+    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
+    # and renames the files with unique names for each version to support long-term caching
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+#STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

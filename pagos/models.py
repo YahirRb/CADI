@@ -1,9 +1,11 @@
 from django.db import models
-from alumnos.models import Alumno  # Importar el modelo Alumno
+from alumnos.models import Alumno,Inscripcion
+from clases.models import Clase 
 
 class Pago(models.Model):
-    id_pago = models.BigAutoField(primary_key=True)  # Llave primaria de tipo big integer con autoincremento
+    idPago = models.BigAutoField(primary_key=True)  # Llave primaria de tipo big integer con autoincremento
     curp = models.ForeignKey(Alumno, on_delete=models.SET_NULL, null=True, blank=True)  # Llave foránea a Alumno
+    idInscripcion=models.ForeignKey(Inscripcion, on_delete=models.SET_NULL, null=True, blank=True)
     fecha_pago = models.DateField(null=True, blank=True)  # Fecha del pago (opcional)
     pago_realizado = models.DateField(null=True, blank=True)  # Fecha en que se realizó el pago (opcional)
     monto = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)  # Monto del pago (opcional)
@@ -15,4 +17,4 @@ class Pago(models.Model):
         db_table = 'pagos'  # Nombre de la tabla en la base de datos
 
     def __str__(self):
-        return f'Pago {self.id_pago} - CURP {self.curp}'
+        return f'Pago {self.idPago} - CURP {self.curp}'
