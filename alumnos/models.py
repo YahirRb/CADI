@@ -43,11 +43,3 @@ class Asistencia(models.Model):
 
     def __str__(self):
         return f'Asistencia {self.idAsistencia} - CURP {self.curp} - Clase {self.idClase}'
-
-
-class Image(models.Model):
-    image = models.ImageField(upload_to='images/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.image.url

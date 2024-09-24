@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Alumno</title>
+    <script>
+        async function enviarFormulario(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/alumno/enviarFoto/', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    alert('Alumno creado con éxito');
+                    event.target.reset();  // Limpia el formulario
+                } else {
+                    const errorData = await response.json();
+                    alert('Error: ' + JSON.stringify(errorData));
+                }
+            } catch (error) {
+                alert('Error de red: ' + error.message);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Crear Alumno</h1>
+    <form onsubmit="enviarFormulario(event)" enctype="multipart/form-data">
+        <label for="curp">CURP:</label>
+        <input type="text" name="curp" id="curp" placeholder="CURP" required><br>
+
+        
+
+        <label for="foto">Foto:</label>
+        <input type="file" name="foto" id="foto" accept="image/*" required><br>
+
+        <button type="submit">Guardar Alumno</button>
+    </form>
+</body>
+</html>
