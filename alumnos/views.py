@@ -10,6 +10,7 @@ from clases.models import Clase
 from pagos.serializers import PagoSerializer
 from .serializers import AlumnoSerializer, AsistenciaSerializer, InscripcionSerializer,ListaInscripciones,AlumnoFotoSerializer
 from django.contrib.auth.models import User
+from CADI_BACKEND.utils import supabase
 
 from django.core.files.base import ContentFile
 
@@ -369,7 +370,7 @@ class GuardarFotoAPIView(APIView):
         # Obtener la CURP y la foto desde el request
         curp = request.data.get('curp')
         foto = request.FILES.get('foto')  # Archivos se envían en request.FILES
-
+        """
         # Verificar si CURP y foto se enviaron en el request
         if not curp:
             return Response({'error': 'CURP es requerida.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -397,15 +398,40 @@ class GuardarFotoAPIView(APIView):
         alumno.save()
 
         return Response({'message': 'Foto actualizada exitosamente.'}, status=status.HTTP_200_OK)
-from django.http import Http404
-from .models import Alumno
-from django.conf import settings
-from django.core.files.storage import default_storage
-import os
+        """
+           # Asegúrate de que el campo de archivo se llama 'image'
+
+        if not foto:
+            return Response({"error": "No se ha proporcionado ninguna imagen."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Define la ruta donde se almacenará la imagen en Supabase
+        path_on_supastorage = f"images/{curp}.png"  # Puedes personalizar la ruta si lo deseas
+
+        try:
+            # Sube la imagen al bucket usando el contenido del archivo
+            res = supabase.storage.from_('cadi').upload(
+                path_on_supastorage,
+                file=foto.read(),  # Lee el contenido del archivo
+                file_options={"content-type": foto.content_type}  # Establece el tipo de contenido
+            )
+
+             
+            # Actualiza el modelo Alumno para guardar la ruta de la imagen
+            alumno = Alumno.objects.get(curp=curp)  # Asegúrate de que el CURP existe en la base de datos
+            alumno.foto = path_on_supastorage  # Guarda la ruta de la imagen en el campo 'foto'
+            alumno.save()  # Guarda los cambios en la base de datos
+
+            return Response({"message": f"Imagen '{foto.name}' subida exitosamente!", "path": path_on_supastorage}, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            # Manejo de errores si la subida falla
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class AlumnoFotoView(APIView):
     def get(self, request, format=None):
-        try:
+        """try:
             curp=request.GET.get('curp')
             # Buscar el alumno por CURP
             alumno = Alumno.objects.get(curp=curp)
@@ -428,4 +454,28 @@ class AlumnoFotoView(APIView):
             raise Http404("Alumno no encontrado.")
         except Exception as e:
             print(e)
-            return Response("error")
+            return Response("error")"""
+        curp = request.GET.get('curp')
+        if not curp:
+            return Response({"error": "CURP no proporcionado."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Busca el alumno por CURP
+            alumno = Alumno.objects.get(curp=curp)  # Asegúrate de que el CURP existe en la base de datos
+
+            # Obtiene la ruta de la imagen desde el campo 'foto'
+            image_path = alumno.foto
+
+            # Define la ruta del archivo en Supabase
+            source = f"https://hzgjuagwofztyqtsvrgt.supabase.co/storage/v1/object/public/cadi/{image_path}"  # Cambia esto al nombre de la imagen que deseas descargar
+            print(source)
+            return Response(source)
+        except Alumno.DoesNotExist:
+            return Response({"error": "Alumno no encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            # Manejo de errores si la descarga falla
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+
+
