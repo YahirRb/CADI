@@ -20,7 +20,7 @@ def tarea_existe_windows(tarea_nombre):
 
 def programar_tarea_windows():
     ruta_script = os.path.join(obtener_ruta_directorio(), "manage.py")  # Solo manage.py
-    ruta_python = r"C:\Users\ACER\Documents\API_CADI\env\Scripts\python.exe"
+    ruta_python = r"C:\Users\ACER\Documents\NuevoCADI\API_CADI\CADI\env\Scripts\python.exe"
     comando = f"schtasks /create /tn MyPythonTask /tr \"cmd /k {ruta_python} {ruta_script} start_scheduler\" /sc minute /mo 1"  # Cambiado a start_scheduler
     os.system(comando)
     print("Tarea programada en el Programador de Tareas de Windows para ejecutarse cada minuto.")

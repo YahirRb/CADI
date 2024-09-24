@@ -11,7 +11,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path 
+import environ 
 
+# Inicializa la lectura de las variables de entorno
+env = environ.Env()
+
+# Lee el archivo .env
+environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,12 +32,13 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'RENDER' not in os.environ
 #DEBUG = True
+"""
 ALLOWED_HOSTS = []
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-    
-#ALLOWED_HOSTS = ['*']
+    """
+ALLOWED_HOSTS = ['*']
 
 
 import logging
@@ -141,8 +148,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',        # Nombre de la base de datos
         'USER': 'postgres.hzgjuagwofztyqtsvrgt',              # Nombre de usuario
-        'PASSWORD': 'iNoyAtMa9apZkCuO',              # Contraseña del usuario
-        'HOST': 'aws-0-us-east-1.pooler.supabase.com',                  # Dirección del servidor de la base de datos
+        'PASSWORD': env.str('DATABASE_PASSWORD'),
+        'HOST': env.str('DATABASE_HOST'),                 # Dirección del servidor de la base de datos
         'PORT': '6543',                       # Puerto (5432 es el puerto por defecto para PostgreSQL)
     }
 }
