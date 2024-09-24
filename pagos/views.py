@@ -116,6 +116,7 @@ class PagosPorVencerList(APIView):
         mensajes = []
         for pago in pagos_por_vencer:
             # Calcular los días restantes
+            print(pago)
             dias_restantes = (pago.proximo_pago - hoy).days
             # Obtener datos del alumno
             alumno = pago.curp  # Asumiendo que curp es la relación al modelo Alumno
@@ -139,7 +140,7 @@ class PagosPendientesList(APIView):
     def get(self, request):
         curp=request.GET.get('curp')
         # Filtrar los pagos que no han sido realizados
-        pagos_pendientes = Pago.objects.filter(estatus='pendiente',curp="2d")
+        pagos_pendientes = Pago.objects.filter(estatus='pendiente',curp=curp)
 
         # Serializar los pagos
         serializer = PagoSerializer(pagos_pendientes, many=True)
