@@ -195,10 +195,10 @@ export const obtenerInscripcionPorCurp = async (curp) => {
 
 export const actualizarAccesoInscripcion = async (curp, idClase, nuevoAcceso) => {
   try {
-    const response = await apiClient.patch('/alumno/actualizarAcceso/', {
-      curp,
-      idClase,
-      nuevoAcceso,
+    const response = await apiClient.put('/alumno/actualizarAcceso/', {
+      curp:curp,
+      idClase:idClase,
+      nuevoAcceso:nuevoAcceso,
     }); // Ajusta el endpoint según tu configuración
 
     console.log('Datos actualizados:', response.data);

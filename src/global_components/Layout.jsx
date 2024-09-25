@@ -7,7 +7,9 @@ import { Assignment, School, HowToReg, Groups, NoteAdd, PersonAdd, AddBox,CardMe
 import CameraAltIcon  from "@mui/icons-material/CameraAlt";
 import ListIcon from '@mui/icons-material/List';
 import useAuth from '../state/SesionState';
-import NotificationHandler from "./NotificationHandler";  // Importar el componente de notificaciones
+import NotificationHandler from "./NotificationHandler"; 
+import ClassIcon from '@mui/icons-material/Class';
+ // Importar el componente de notificaciones
 
 function seleccionarOpcion(id) {
   const antiguaOpcion = document.querySelector(".opcion_seleccionada");
@@ -43,6 +45,7 @@ export default function Layout() {
     isAdmin && <OpcionMenu key={7} id="Inscripciones" icon={<ListIcon />} title="Inscripciones" route="/listarInscripciones" />,
     isAdmin && <OpcionMenu key={8} id="Paquetes" icon={<AddBox />} title="Paquetes" route="/listarPaquetes" />,
     isAdmin && <OpcionMenu key={9} id="TomarAsistencia" icon={<CameraAltIcon />} title="Toma asistencia" route="/leer" />,
+    isAlumno &&<OpcionMenu key={10} id="clasesAlumno" icon={<ClassIcon />} title="Clases" route="/clasesAlumno" />,
 
 
   ].filter(Boolean);

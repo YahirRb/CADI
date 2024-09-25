@@ -47,6 +47,7 @@ export const usePaquete = () => {
     setError(null);
 
     try {
+      console.log(idClase,curp)
       // Llamada al servicio para eliminar la clase del paquete
       await eliminarClaseDelPaquete(idClase, curp);
       setSuccess(true);

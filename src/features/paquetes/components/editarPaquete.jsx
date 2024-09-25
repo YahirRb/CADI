@@ -107,10 +107,11 @@ const EditarPaquete = () => {
         precio_total: precioTotal,
         curp: alumno.curp
       };
+      console.log(clasesEliminadas)
       await eliminarClasePaquete(clasesEliminadas,curp)
       //await actualizarAcceso(curp, clasesEliminadas,false)
-      await eliminarInscripcionPorCurp(curp, clasesEliminadas)
-      await registroPaquete(paquete, clasesSeleccionadas);
+      //await eliminarInscripcionPorCurp(curp, clasesEliminadas)
+      //await registroPaquete(paquete, clasesSeleccionadas);
       
       // Registrar cada pago individualmente
       if (alumno && clasesSeleccionadas.length > 0) {
@@ -127,7 +128,7 @@ const EditarPaquete = () => {
               estatus: 'pendiente',
               motivo: 'Paquete'
             };
-            await registroPago(nuevoPago);
+            //await registroPago(nuevoPago);
           }
         }
 
@@ -140,7 +141,7 @@ const EditarPaquete = () => {
           horario: clase.horario
         }));
 
-        await registroInscripcion(datosInscripciones);
+        //await registroInscripcion(datosInscripciones);
 
         setSuccessMessage('Paquete y pagos registrados exitosamente.');
       } else {

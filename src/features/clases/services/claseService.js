@@ -69,3 +69,20 @@ export const obtenerClases = async () => {
     throw new Error(error.message);
   }
 };
+
+export const obtenerClasesAlumno = async (curp) => {
+  try {
+    console.log(curp)
+    const response = await apiClient.get('/clase/clasesAlumno/', {
+      params: {
+        curp: curp
+      }
+    }); // Ajusta el endpoint según tu configuración
+
+    console.log('Datos recibidos:', response.data);
+    return { data: response.data, error: null };
+  } catch (error) {
+    console.error('Error:', error.message);
+    return { data: null, error: error.message };
+  }
+};

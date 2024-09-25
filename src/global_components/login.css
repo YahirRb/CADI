@@ -1,40 +1,54 @@
+/* Establece altura total para html y body */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Contenedor del login que ocupa toda la pantalla */
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f5f5f5;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw; /* Asegúrate de que también abarque todo el ancho */
+  background-color: #FCFCFC;
+}
+
+/* Si hay algún componente hijo que deseas centrar, asegúrate de que no tenga estilos conflictivos */
+
+
+.login-form {
+  padding: 40px;
+  width: 100%;
+  max-width: 300px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Añadir una sombra suave */
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-input {
+  margin-bottom: 20px;
+}
+
+.login-button {
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
   .login-form {
-    padding: 30px;
-    width: 100%;
-    max-width: 400px;
-    background-color: white;
-    border-radius: 8px;
+    width: 90%;
   }
-  
-  .login-title {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .form-content {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .login-input {
-    margin-bottom: 15px;
-  }
-  
-  .login-button {
-    margin-top: 20px;
-  }
-  
-  @media (max-width: 768px) {
-    .login-form {
-      width: 90%;
-    }
-  }
-  
+}

@@ -229,12 +229,14 @@ export const listarTodosLosPaquetes = async () => {
 // Función para eliminar una clase del paquete
 export const eliminarClaseDelPaquete = async (idClase, curp) => {
   try {
+    console.log(idClase,curp)
     const response = await apiClient.delete('/clase/eliminarClasePaquete/', {
-      data: { idClase, curp },
-    });
+      idClase: idClase, // El objeto que contiene la información del alumno
+      curp: curp,    // Esto debe ser un array de inscripciones
+  });
     return { data: response.data, error: null };
   } catch (error) {
-    console.error('Error:', error.message);
+    //console.error('Error:', error.message);
     return { data: null, error: error.message };
   }
 };

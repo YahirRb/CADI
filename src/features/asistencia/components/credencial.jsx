@@ -4,7 +4,7 @@ import { useInscripcion } from '../../inscripcion/hooks/useInscripcion';
 import { useRegistroAsistencia } from '../../asistencia/hooks/useAsistencia'; 
 import { useStudent } from '../../alumnos/hooks/useAlumno'; 
 import { toPng } from 'html-to-image'; 
-import { Button, Modal, Typography, Input } from '@mui/material'; 
+import { Button, Modal, Typography,CircularProgress, Input } from '@mui/material'; 
 import DownloadIcon from '@mui/icons-material/Download'; 
 
 import useAuth from '../../../state/SesionState'; 
@@ -47,7 +47,7 @@ const QRCodeTemplate = () => {
       };
       setQrData(JSON.stringify(qrObject));
     }
-  }, [inscripcion, alumno]);
+  }, [inscripcion, alumno]); 
 
   useEffect(() => {
     if (fotoError) {
@@ -56,7 +56,7 @@ const QRCodeTemplate = () => {
   }, [fotoError]);
 
   if (inscripcionLoading || studentLoading || fotoLoading) 
-    return <p>Cargando...</p>;
+    return <CircularProgress />;
   
   if (inscripcionError || studentError) {
     const errorMessage = inscripcionError?.message || studentError?.message || "Ocurrió un error inesperado.";
@@ -118,7 +118,7 @@ const QRCodeTemplate = () => {
           {fotoUrl ? (
             <img src={fotoUrl} alt="Foto del alumno" />
           ) : (
-            <img src="/public/Insecto_soleador.png" alt="Foto no disponible" />
+            <img src="" alt="Foto no disponible" />
           )}
         </span>
         <span className="cred_data" id="cred_nombre">

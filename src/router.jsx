@@ -14,6 +14,7 @@ import EditarPaquete from './features/paquetes/components/editarPaquete';
 import QRCodeGenerator from './features/asistencia/components/credencial'
 import QRCodeReader from './features/asistencia/components/tomarAsistencia';  
 import Layout  from './global_components/Layout';  
+import InscripcionesAlumno from './features/clases/components/inscripcionesAlumno'
 import Unauthorized from './global_components/Unauthorized';
 
 import HomePage from './global_components/homePage';
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
       { path: "leer", element: <ProtectedRoute element={<QRCodeReader />} isAuthenticatedRequired={true}isAdminRequired={true}/> },
       { path: "credencial", element: <ProtectedRoute element={<QRCodeGenerator />} isAuthenticatedRequired={true}/> },
       
+      { path: "clasesAlumno", element: <ProtectedRoute element={<InscripcionesAlumno />} isAuthenticatedRequired={true}/> },
       { path: "/", element: <ProtectedRoute element={<HomePage />} isAuthenticatedRequired={true}/> },
       { path: "/unauthorized", element: <ProtectedRoute element={<Unauthorized />} isAuthenticatedRequired={true}/> },
       

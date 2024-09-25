@@ -26,27 +26,18 @@ const Login = () => {
     setError(''); // Limpiar el error
 
     try {
-      // Hacer la solicitud a la API
-      const response = await axios.post( 'https://cadi.onrender.com/login/',{ //'http://127.0.0.1:8000/login/', {
+      const response = await axios.post('https://cadi.onrender.com/login/', {
         username: email,
         password: password,
       });
 
-      // Manejar la respuesta
-      console.log('Respuesta de la API:', response.data);
-
-      // Decodificar el token de acceso para obtener isAdmin
       const decodedToken = jwtDecode(response.data.access);
-      console.log(decodedToken.user_id)
-      const isAdmin = decodedToken.isAdmin; // Asegúrate de que este campo esté en el token
+      const isAdmin = decodedToken.isAdmin;
       const curp = decodedToken.user_id;
 
-      // Guardar los tokens y el estado de isAdmin usando Zustand
-      setTokens(response.data.access, response.data.refresh, isAdmin,curp);
+      setTokens(response.data.access, response.data.refresh, isAdmin, curp);
       navigate('/');
-      // Aquí puedes redirigir al usuario o hacer otras acciones
     } catch (error) {
-      // Manejar el error
       console.error('Error en la solicitud:', error);
       setError('Credenciales inválidas');
     }
@@ -54,7 +45,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <Paper elevation={3} className="login-form">
+      <Paper elevation={5} className="login-form">
         <Typography variant="h4" component="h1" className="login-title">
           Iniciar Sesión
         </Typography>
