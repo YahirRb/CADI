@@ -239,3 +239,17 @@
     height: 100%;
     z-index: 2;
   }
+
+  .cerrar-sesion-btn {
+    background-color: #ff5722;  /* Color de fondo */
+    color: white;               /* Color del texto */
+    padding: 10px 20px;         /* Padding para agrandar el botón */
+    font-size: 16px;            /* Tamaño del texto */
+    border-radius: 8px;         /* Bordes redondeados */
+    transition: background-color 0.3s ease; /* Transición suave al cambiar el color */
+  }
+  
+  .cerrar-sesion-btn:hover {
+    background-color: #e64a19;  /* Color de fondo al hacer hover */
+  }
+  

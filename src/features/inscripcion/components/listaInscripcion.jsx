@@ -1,20 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useInscripcion } from '../hooks/useInscripcion'; // Ajusta la ruta según sea necesario
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Alert, TextField } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import useInscripciones from '../../../state/InscripcionesState'; // Ajusta la ruta según sea necesario
+import { useNavigate } from 'react-router-dom'; // Ajusta la ruta según sea necesario
 import './listaInscripciones.css'; // Asegúrate de tener un archivo CSS similar para el estilo
 
 const ListaInscripciones = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { inscripciones, loading, error, listaInscripciones } = useInscripcion();
-  const addInscripcion = useInscripciones((state) => state.addInscripcion);
-  const clearInscripciones = useInscripciones((state) => state.clearInscripciones);
   const navigate = useNavigate();
 
   useEffect(() => {
-    listaInscripciones(); // Carga las inscripciones al montar el componente
-  }, []);
+    listaInscripciones(); 
+    console.log(filteredInscripciones.acceso)// Carga las inscripciones al montar el componente
+  }, [ ]);
 
   if (loading) return <CircularProgress />;
   if (error) return <Alert severity="error">{error}</Alert>;
@@ -23,14 +21,11 @@ const ListaInscripciones = () => {
   const filteredInscripciones = searchTerm.trim() === ''
     ? inscripciones
     : inscripciones.filter(inscripcion => 
-        inscripcion.curp?.toLowerCase() === searchTerm.toLowerCase()
+        inscripcion.curp?.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
   // Maneja el clic en una fila de la tabla
   const handleRowClick = (inscripcion) => {
-    console.log('Datos de la inscripción seleccionada:', inscripcion);
-    useInscripciones.getState().clearInscripciones();
-    addInscripcion(inscripcion); // Guarda la inscripción en el estado de Zustand
     navigate(`/crearPaquete/${inscripcion.idInscripcion}/${inscripcion.horario}/${inscripcion.curp}`);
   };
 
@@ -66,11 +61,11 @@ const ListaInscripciones = () => {
                   className="table-row"
                   onClick={() => handleRowClick(inscripcion)} // Añadido el manejador de clic
                 >
-                  <TableCell className="table-cell">{inscripcion.idInscripcion}</TableCell>
-                  <TableCell className="table-cell">{inscripcion.curp}</TableCell>
-                  <TableCell className="table-cell">{inscripcion.idClase}</TableCell>
-                  <TableCell className="table-cell">{inscripcion.fechaInscripcion}</TableCell>
-                  <TableCell className="table-cell">{inscripcion.acceso}</TableCell>
+                  <TableCell className="table-cell">{inscripcion.idInscripcion || '-'}</TableCell>
+                  <TableCell className="table-cell">{inscripcion.curp || '-'}</TableCell>
+                  <TableCell className="table-cell">{inscripcion.idClase || '-'}</TableCell>
+                  <TableCell className="table-cell">{inscripcion.fechaInscripcion || '-'}</TableCell>
+                  <TableCell className="table-cell">{inscripcion.acceso || '-'}</TableCell>
                 </TableRow>
               ))
             ) : (

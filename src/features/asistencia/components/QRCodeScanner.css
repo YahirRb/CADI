@@ -1,0 +1,93 @@
+.scanner-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .card-container {
+    flex: 1;
+    max-width: 400px;
+    max-height: 400px; /* Altura máxima para el contenedor */
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s;
+    overflow-y: auto; /* Permitir scroll vertical */
+}
+  
+  .card-container:hover {
+    transform: translateY(-10px);
+  }
+  
+ 
+
+.response-card {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px; /* Espacio entre las tarjetas */
+}
+
+  .scanner-section {
+    flex: 1;
+    max-width: 500px;
+    position: relative;
+  }
+  
+  .scanner-container {
+    display: flex;
+    justify-content: flex-end; /* Posiciona a la derecha */
+    align-items: center; /* Centra verticalmente */
+    position: relative; /* Para el posicionamiento del cuadro */
+    width: 100%;
+    height: 100%;
+  }
+  
+  .qr-highlight {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    border: 2px solid rgba(0, 255, 0, 0.7);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  
+  .loading-message {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .top-button { 
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    background-color: #007bff; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */ 
+    top: 10px; /* Distancia desde la parte superior */
+    left: 50%; /* Posiciona el botón al centro */
+    z-index: 10; /* Asegúrate de que esté por encima de otros elementos */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para un efecto de profundidad */
+    transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+  }
+  
+  .top-button:hover {
+    background-color: #0056b3; /* Cambia el color al pasar el ratón */
+  }

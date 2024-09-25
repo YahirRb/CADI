@@ -1,19 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Grid, TextField, Button, Typography, CircularProgress, Alert, List, ListItem, ListItemText } from '@mui/material';
-import usePagos from '../hooks/usePagos'; // Importa el hook personalizado para pagos
+import { useParams } from 'react-router-dom'; // Importa useParams
+import usePagos from '../hooks/usePagos'; 
 import './pagosForm.css';
 
 const PagosForm = () => {
-  const [curp, setCurp] = useState('');
-  const [monto, setMonto] = useState('');
-  const [fecha, setFecha] = useState('');
+  const { idPago, curp,monto } = useParams();  
+  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]); // Establece la fecha actual
+
   const [pagosCurp, setPagosCurp] = useState([]);
-  const { registrarPago, listarPagosPorCurp, loading, error } = usePagos();
+  const { registroPago, listarPagosPorCurp, loading, error } = usePagos();
+
+  // Muestra la CURP y el ID de clase en la consola
+  useEffect(() => {
+    console.log('CURP desde los parámetros:', curp);
+    console.log('ID de Clase desde los parámetros:', idPago);
+    
+    console.log('ID de Clase desde los parámetros:', monto);
+  }, [curp, idPago,monto]);
 
   const handleRegistroPago = async (e) => {
     e.preventDefault();
     try {
-      await registrarPago({ curp, monto, fecha });
+      await registroPago({idPago});
       alert('Pago registrado exitosamente');
     } catch (err) {
       alert(`Error al registrar el pago: ${err.message}`);
@@ -37,19 +46,18 @@ const PagosForm = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               label="CURP"
-              value={curp}
-              onChange={(e) => setCurp(e.target.value)}
+              value={curp} // Muestra la CURP desde los pa+
               required
               fullWidth
               className="text-field"
+              disabled // Deshabilita el campo para evitar modificaciones
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               label="Monto"
               type="number"
-              value={monto}
-              onChange={(e) => setMonto(e.target.value)}
+              value={monto} 
               required
               fullWidth
               className="text-field"
@@ -82,30 +90,7 @@ const PagosForm = () => {
         </Grid>
       </form>
 
-      <Typography variant="h4" gutterBottom className="title">Listado de Pagos por CURP</Typography>
-      <Button 
-        variant="contained" 
-        color="primary" 
-        onClick={handleListarPagosPorCurp} 
-        disabled={loading}
-      >
-        {loading ? <CircularProgress size={24} className="spinner" /> : 'Listar Pagos'}
-      </Button>
-      <List>
-        {pagosCurp.length > 0 ? (
-          pagosCurp.map(pago => (
-            <ListItem key={pago.id}>
-              <ListItemText
-                primary={`Monto: ${pago.monto}, Fecha: ${pago.fecha}`}
-              />
-            </ListItem>
-          ))
-        ) : (
-          <ListItem>
-            <ListItemText primary="No se han encontrado pagos." />
-          </ListItem>
-        )}
-      </List>
+       
     </div>
   );
 };

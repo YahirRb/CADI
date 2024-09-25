@@ -7,11 +7,11 @@ const usePagos = () => {
   const [pagos, setPagos] = useState([]);
   const [alumno, setAlumno] = useState(null)
 
-  const registroPago = async (datosPago) => {
+  const registroPago = async (idPago) => {
     setLoading(true);
     setError(null);
     try {
-      await registrarPago(datosPago);
+      await registrarPago(idPago);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -21,8 +21,8 @@ const usePagos = () => {
 
   const listaPagos =async () => {
     try {
-      const data = await listarPagos();
-      setPagos(data);
+      const data = await listarPagos();  
+      setPagos(data.data || []);
     } catch (error) {
       setError(error.message);
     } finally {

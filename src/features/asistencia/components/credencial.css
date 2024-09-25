@@ -146,3 +146,59 @@ main {
   background-color: var(--primary-color);
   z-index: 1;
 }
+
+.modal-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px; /* Ajusta el ancho */
+
+  height: 400px; /* Ajusta la altura *
+  padding: 20px; /* Espaciado interno */
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Títulos del modal */
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Descripción del modal */
+.modal-description {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+/* Estilo de los botones */
+.modal-button {
+  margin-top: 10px;
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px; /* Espaciado interno en los botones */
+  font-size: 1rem; /* Tamaño de fuente */
+}
+
+/* Estilo de la previsualización */
+.preview-image {
+  margin-top: 10px;
+  width: 30%; /* Aumenta el tamaño de la previsualización */
+  height: auto;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  display: block; /* Asegura que la imagen esté centrada */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Agregar un estilo para el contenedor de entrada de archivo */
+.input-file-container {
+  margin-top: 10px;
+  border: 2px dashed #007bff; /* Borde estilo línea discontinua */
+  padding: 10px;
+  text-align: center; /* Centra el texto */
+}

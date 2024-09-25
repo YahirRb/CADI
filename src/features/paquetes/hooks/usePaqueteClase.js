@@ -7,18 +7,16 @@ export const usePaquete = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [paquetes, setPaquetes] = useState([]);
-
-  const registroPaquete = async (paquete, clasesSeleccionadas) => {
+//camboar esto
+  const registroPaquete = async (paquete, clasesSeleccionadas,listaPagos,datosInscripciones) => {
     setLoading(true);
     setError(null);
 
     try {
       // Primero registrar el paquete
-      const paqueteRegistrado = await registrarPaquete(paquete);
+      const paqueteRegistrado = await registrarPaquete(paquete, clasesSeleccionadas,listaPagos,datosInscripciones);
 
-      // Después registrar las clases relacionadas con el paquete
-      await registrarPaqueteClases(paqueteRegistrado.idPaquete, clasesSeleccionadas);
-
+      
       setSuccess(true);
     } catch (err) {
       setError(err.message || 'Error desconocido');
@@ -35,7 +33,7 @@ export const usePaquete = () => {
 
     try {
       const paquetesListados = await listarTodosLosPaquetes();
-      setPaquetes(paquetesListados);
+      setPaquetes(paquetesListados.data || []);
     } catch (err) {
       setError(err.message || 'Error desconocido');
       console.error('Error al cargar paquetes:', err);

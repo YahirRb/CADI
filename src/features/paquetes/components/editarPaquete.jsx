@@ -48,8 +48,7 @@ const EditarPaquete = () => {
 
   useEffect(() => {
     if (inscripciones && clases) {
-      const inscripcionesConAcceso = inscripciones.filter(ins => ins.acceso);
-      console.log(inscripcionesConAcceso)
+      const inscripcionesConAcceso = inscripciones.filter(ins => ins.acceso && ins.curp === curp);
       const clasesSeleccionadas = inscripcionesConAcceso.map(ins => {
         const clase = clases.find(c => c.idClase === ins.idClase );
         return {

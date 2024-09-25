@@ -27,39 +27,59 @@ const PaqueteForm = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+
+
+  useEffect(() => {
+    if (pagos && pagos.length > 0) {
+      const ultimo = pagos.sort((a, b) => new Date(b.fecha_pago) - new Date(a.fecha_pago))[0];
+      if (ultimo && ultimo.fecha_pago) {  // Verificar si el último pago es correcto
+        setUltimoPago(ultimo);
+      }
+    }
+  }, [pagos]);
+  
   useEffect(() => {
     const fetchData = async () => {
-      if (curp) {
+      if (curp) { 
         await listaPagosPorCurp(curp); // Obtener lista de pagos
       }
-      if (idClase) {
+      if (idClase) { 
         await listarInscripcionPorId(idClase);
       }
     };
-
-    fetchData();
-  }, [curp, idClase]); // Ejecuta solo cuando `curp` o `idClase` cambien
   
-  useEffect(() => {
+    fetchData();
+  }, [curp, idClase]);
+  // Ejecuta solo cuando `curp` o `idClase` cambien
+  
+  useEffect(() => {  // Verifica que `pagos` está en el formato esperado
     if (pagos && pagos.length > 0) {
       const ultimo = pagos.sort((a, b) => new Date(b.fecha_pago) - new Date(a.fecha_pago))[0];
       console.log("Último pago encontrado:", ultimo); // Verificar si el último pago es correcto
       setUltimoPago(ultimo);
     }
   }, [pagos]);
-
+  
   useEffect(() => {
+
     if (inscripcion && clases) {
       const claseSeleccionada = clases.find(clase => clase.idClase === inscripcion.idClase);
       if (claseSeleccionada) {
         setNombre(claseSeleccionada.nombre || '');
-        setPrecioTotal(claseSeleccionada.precio || 0.0);
-        setClasesSeleccionadas([{ idClase: claseSeleccionada.idClase || '', horario: inscripcion.horario || '', fechaPago: ultimoPago?.fecha_pago || '' }]);
+        setPrecioTotal(claseSeleccionada.costo || 0.0);
+        console.log(claseSeleccionada.costo)
+        setClasesSeleccionadas([{
+          idClase: claseSeleccionada.idClase || '',
+          horario: inscripcion.horario || '',
+          fechaPago: ultimoPago?.fecha_pago || '',
+          costo: claseSeleccionada.costo || 0.0 // Asegúrate de que el costo se asigna correctamente
+        }]);
       }
     }
   }, [inscripcion, clases, ultimoPago]);
+  
 
-  useEffect(() => {
+  useEffect(() => { 
     if (clasesSeleccionadas.length > 0) {
       const descripcionActualizada = clasesSeleccionadas
         .map((clase) => {
@@ -72,6 +92,7 @@ const PaqueteForm = () => {
       setDescripcion(`${descripcionActualizada} | Horario de Inscripción: ${horarioInscripcion}`);
     }
   }, [clasesSeleccionadas]);
+  ;
 
   useEffect(() => {
     const nuevoPrecioTotal = clasesSeleccionadas.reduce((total, clase) => {
@@ -93,29 +114,31 @@ const PaqueteForm = () => {
     setErrorMessage(''); // Limpiar mensaje de error anterior
     
     try {
+      const listaPagos = [];
       // Registrar el paquete
       const paquete = {
         nombre: "ejemplo",
         precio_total: precioTotal,
         curp:alumno.curp
       };
-      await registroPaquete(paquete, clasesSeleccionadas);
+      
   
       // Registrar cada pago individualmente
       if (alumno && clasesSeleccionadas.length > 0) {
         for (const clase of clasesSeleccionadas) {
           if (clase.fechaPago) {
             const proximoPago = sumarUnMes(clase.fechaPago);
-  
             const nuevoPago = {
               curp: alumno.curp,
-              monto: parseFloat(precioTotal) / clasesSeleccionadas.length, // Dividir el monto total entre el número de clases
+              monto: clase.costo, // Dividir el monto total entre el número de clases
               fecha_pago: clase.fechaPago, 
               pago_realizado:"2024-02-01",// Usar la fecha de pago de cada clase
               proximo_pago: proximoPago, // Guardar la fecha del próximo pago
               estatus: 'pendiente',
-              motivo:'Paquete' // O el estado que necesites
+              motivo:'Paquete',
+              idClase:clase.idClase // O el estado que necesites
             };
+            listaPagos.push(nuevoPago);
             //await registroPago(nuevoPago);
           }
         }
@@ -128,8 +151,10 @@ const PaqueteForm = () => {
           horario: clase.horario // Asegúrate de que el horario esté disponible
         }));
         
-        // Envía directamente la lista de inscripciones, ya es un array
-        await registroInscripcion(datosInscripciones);
+        // Envía directamente la lista de inscripciones, ya es un array 
+        console.log("inscripcion",listaPagos)
+        await registroPaquete(paquete, clasesSeleccionadas,listaPagos,datosInscripciones);
+        //await registroInscripcion(datosInscripciones);
 
         setSuccessMessage('Paquete y pagos registrados exitosamente.');
       } else {
@@ -155,10 +180,15 @@ const PaqueteForm = () => {
   const handleClaseChange = (index, field, value) => {
     const updatedClases = [...clasesSeleccionadas];
     updatedClases[index][field] = value;
+  
     if (field === 'idClase') {
+      const claseSeleccionada = clases.find(c => c.idClase === value);
+      console.log("clase:",claseSeleccionada)
+      updatedClases[index]['costo'] = claseSeleccionada?.costo || 0; // Agregar costo de la clase
       updatedClases[index]['horario'] = ''; // Reiniciar horario si cambias la clase
-      updatedClases[index]['fechaPago'] = ultimoPago?.fecha_pago || ''; // Reiniciar fecha de pago si cambias la clase
+      updatedClases[index]['fechaPago'] = ultimoPago?.fecha_pago || ''; // Asignar último pago si existe
     }
+  
     setClasesSeleccionadas(updatedClases);
   };
 
@@ -170,6 +200,7 @@ const PaqueteForm = () => {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
+
 
   useEffect(() => {
     if (clases) {
@@ -202,7 +233,7 @@ const PaqueteForm = () => {
 
           {clasesSeleccionadas.map((clase, index) => (
             <Grid container spacing={2} key={index} style={{ marginTop: '20px' }}>
-              <Grid item xs={12} sm={5}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   select
                   fullWidth
@@ -220,7 +251,7 @@ const PaqueteForm = () => {
                   ))}
                 </TextField>
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={2.5}>
                 <TextField
                   select
                   fullWidth
@@ -238,7 +269,7 @@ const PaqueteForm = () => {
                   ))}
                 </TextField>
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={2.5}>
                 <TextField
                   fullWidth
                   label="Fecha de Pago"
@@ -250,6 +281,18 @@ const PaqueteForm = () => {
                   className="text-field"
                 />
               </Grid>
+              <Grid item xs={12} sm={2}>
+  <TextField
+    fullWidth
+    label="Costo"
+    value={clase.costo || 0.0} // Asegúrate de mostrar el costo
+    InputProps={{
+      readOnly: true, // Solo lectura si no quieres permitir modificaciones
+    }}
+    variant="outlined"
+    className="text-field"
+  />
+</Grid>
               <Grid item xs={12} sm={1}>
                 <IconButton
                   aria-label="eliminar"

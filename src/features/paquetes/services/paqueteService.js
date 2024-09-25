@@ -1,4 +1,4 @@
-import supabase from '../../../supabaseClient';
+/*import supabase from '../../../supabaseClient';
 
 // paqueteService.js
 
@@ -168,3 +168,97 @@ export const eliminarClaseDelPaquete = async (idClase, curp) => {
     throw error;
   }
 };
+
+*/
+
+import axios from 'axios';
+
+const apiClient = axios.create({
+  //baseURL: 'http://127.0.0.1:8000',
+  baseURL: 'https://cadi.onrender.com/', // URL base de tu API Django
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Función para registrar un paquete
+export const registrarPaquete = async (paquete, clasesSeleccionadas,listaPagos,datosInscripciones) => {
+  try {
+    
+    console.log(datosInscripciones)
+    const response = await apiClient.post('/clase/registrarPaquete/', {
+      paquete: paquete,
+      clasesSeleccionadas: clasesSeleccionadas,
+      listaPagos: listaPagos,
+      datosInscripciones: datosInscripciones // Enviar el objeto `paquete` en el cuerpo de la solicitud
+    }); 
+    
+    return { data: response.data, error: null };
+  } catch (error) {
+    console.error('Error:', error.message);
+    return { data: null, error: error.message };
+  }
+};
+
+// Función para registrar clases en un paquete
+export const registrarPaqueteClases = async (paqueteId, clasesSeleccionadas) => {
+  try {
+    // Asegúrate de enviar las clases en el formato correcto
+    console.log(paqueteId)
+    console.log(clasesSeleccionadas)
+    const response = await apiClient.post('/clase/registrar-clases-paquete/', { paqueteId:paqueteId, clases: clasesSeleccionadas });
+     
+    return { data: response.data, error: null };
+  } catch (error) {
+    console.error('Error:', error.message);
+    return { data: null, error: error.message };
+  }
+};
+
+// Función para listar todos los paquetes
+export const listarTodosLosPaquetes = async () => {
+  try {
+    const response = await apiClient.get('/clase/listarPaquetes/');
+    return { data: response.data, error: null };
+  } catch (error) {
+    console.error('Error:', error.message);
+    return { data: [], error: error.message };
+  }
+};
+
+// Función para eliminar una clase del paquete
+export const eliminarClaseDelPaquete = async (idClase, curp) => {
+  try {
+    const response = await apiClient.delete('/clase/eliminarClasePaquete/', {
+      data: { idClase, curp },
+    });
+    return { data: response.data, error: null };
+  } catch (error) {
+    console.error('Error:', error.message);
+    return { data: null, error: error.message };
+  }
+};
+
+/*
+// Función para verificar si ya existe un paquete para una CURP
+const verificarPaquetePorCurp = async (curp) => {
+  try {
+    const response = await apiClient.get(`/paquete/`, { params: { curp } });
+    return response.data.idPaquete || null;
+  } catch (error) {
+    console.error('Error al verificar el paquete por CURP:', error.message);
+    return null;
+  }
+};
+
+// Función para verificar si una clase ya está en el paquete
+const verificarClaseEnPaquete = async (paqueteId, idClase) => {
+  try {
+    const response = await apiClient.get('/paquete-clases/', { params: { idPaquete: paqueteId, idClase } });
+    return response.data.length > 0;
+  } catch (error) {
+    console.error('Error al verificar la clase en el paquete:', error.message);
+    return false;
+  }
+};
+*/

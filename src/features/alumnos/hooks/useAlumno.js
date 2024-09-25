@@ -1,16 +1,17 @@
 import { useState,useEffect } from 'react';
-import { resgistroAlumno,listarAlumnos, buscarAlumnoPorCurp } from '../services/alumnoService';
+import { listarAlumnos, buscarAlumnoPorCurp,registroAlumno } from '../services/alumnoService';
 
 export const useStudent = () => {
   const [alumnos, setAlumnos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const registro = async (datosAlumno) => {
+  const registro = async (alumno,pago,inscripcion) => {
     setLoading(true);
-    try {
-      await resgistroAlumno(datosAlumno); 
+    try { 
+      await registroAlumno(alumno,pago,inscripcion); 
     } catch (err) {
+      console.log('Error:', err.response.data );
       setError(err.message);
     } finally {
       setLoading(false);
@@ -31,7 +32,7 @@ export const useStudent = () => {
   const buscarAlumno = async (curp) => {
     setLoading(true);
     try {
-      const alumno = await buscarAlumnoPorCurp(curp);
+      const alumno = await buscarAlumnoPorCurp(curp); 
       return alumno;
     } catch (error) {
       setError(error.message);

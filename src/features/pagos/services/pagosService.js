@@ -1,4 +1,4 @@
-import  supabase   from '../../../supabaseClient';
+/*import  supabase   from '../../../supabaseClient';
 
 const getTodayDate = () => {
   const today = new Date();
@@ -38,7 +38,7 @@ export const listarPagos = async () => {
   } catch (error) {
     throw new Error(error.message);
   }
-};
+};*/
 /*
 export const listarPagosPorCurp = async (curp) => {
     try {
@@ -65,6 +65,8 @@ export const listarPagosPorCurp = async (curp) => {
       throw error;
     }
   };*/
+
+  /*
   export const listarPagosPorCurp = async (curp) => {
     try {
       // Obtener datos del alumno usando el CURP
@@ -114,3 +116,83 @@ export const listarPagosPorCurp = async (curp) => {
       throw error;
     }
   };
+*/
+
+
+  import axios from 'axios';
+
+const apiClient = axios.create({
+  //baseURL: 'http://127.0.0.1:8000',
+  baseURL: 'https://cadi.onrender.com/', // URL base de tu API Django
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Función para obtener la fecha actual en formato YYYY-MM-DD
+
+
+// Función para registrar un pago
+export const registrarPago = async (idPago) => {
+  try {
+    
+
+    const response = await apiClient.post('/pagos/registrar/', idPago); // Ajusta el endpoint según tu configuración
+
+    console.log('Pago registrado:', response.data);
+    return { data: response.data, error: null };
+  } catch (error) {
+    console.error('Error al registrar el pago:', error.message);
+    return { data: null, error: error.message };
+  }
+};
+
+// Función para listar todos los pagos
+export const listarPagos = async () => {
+  try {
+    const response = await apiClient.get('/pagos/pendientes/'); // Ajusta el endpoint según tu configuración
+
+    return { data: response.data, error: null };
+  } catch (error) {
+    console.error('Error al listar los pagos:', error.message);
+    return { data: [], error: error.message };
+  }
+};
+
+// Función para listar los pagos por CURP
+export const listarPagosPorCurp = async (curp) => {
+  try {
+    // Obtener datos del alumno usando el CURP
+    console.log("entra")
+    
+
+    // Usar el CURP del alumno para obtener sus pagos
+    const pagosResponse = await apiClient.get(`/pagos/curp/`, {
+      params: { curp: curp }
+    });
+    const {alumno,pagos} = pagosResponse.data;
+    console.log(alumno)
+    // Combinar datos del alumno y pagos
+    return {
+      alumno:alumno,
+      pagos: pagos || []
+    };
+
+  } catch (error) {
+    console.error('Error al listar los pagos por CURP:', error.message);
+    return { alumno: null, pagos: [], error: error.message };
+  }
+};
+// Función para editar un pago
+export const editarPago = async (idPago, datosActualizados) => {
+  try {
+    const { data, error } = await apiClient.patch(`/pagos/editar/${idPago}/`, datosActualizados); // Ajusta el endpoint según tu configuración
+
+    if (error) throw new Error(error.message);
+
+    return { data, error: null };
+  } catch (error) {
+    console.error('Error al editar el pago:', error.message);
+    return { data: null, error: error.message };
+  }
+};

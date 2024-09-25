@@ -10,6 +10,7 @@ export const useClase = () => {
     setLoading(true);
     setError(null);
     try {
+      console.log(data)
       await registrarClase(data);
       // Maneja la respuesta o realiza alguna acción adicional aquí
     } catch (err) {

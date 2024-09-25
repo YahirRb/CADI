@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom'; 
+import ProtectedRoute from './global_components/ProtectedRoute'
 import AlumnoForm from './features/alumnos/components/alumnoForm';
 import ListaAlumnos from './features/alumnos/components/listaAlumnos';  
 import InscripcionForm from './features/inscripcion/components/inscripcionForm'; 
-import PersonalForm from './features/personal/components/personalForm'; 
 import ClaseForm from './features/clases/components/claseForm';
 import AsistenciaForm from './features/asistencia/components/asistenciaForm';
 import PagosForm from './features/pagos/components/pagosForm';  
@@ -14,29 +14,39 @@ import EditarPaquete from './features/paquetes/components/editarPaquete';
 import QRCodeGenerator from './features/asistencia/components/credencial'
 import QRCodeReader from './features/asistencia/components/tomarAsistencia';  
 import Layout  from './global_components/Layout';  
+import Unauthorized from './global_components/Unauthorized';
+
+import HomePage from './global_components/homePage';
+import Login from "./global_components/login";
  
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />, // Ruta protegida si es necesario
     children: [
-      { path: "registroAlumno", element: <AlumnoForm /> },
-      { path: "listaAlumnos", element: <ListaAlumnos /> },
-      { path: "inscripcion", element: <InscripcionForm /> },
-      { path: "personal", element: <PersonalForm /> },
-      { path: "clase", element: <ClaseForm /> },
-      { path: "asistencia", element: <AsistenciaForm /> },
-      { path: "pagos", element: <PagosForm /> },
-      { path: "listaPagos", element: <ListaPagos /> },
-      { path: "crearPaquete/:idClase/:horario/:curp", element: <PaqueteForm /> },
-      { path: "listarInscripciones", element: <ListaIncripciones /> },
-      { path: "listarPaquetes", element: <ListaPaquetes /> },
+      { path: "registroAlumno", element: <ProtectedRoute element={<AlumnoForm />} isAuthenticatedRequired={true}  isAdminRequired={true}/> },
+      { path: "listaAlumnos", element: <ProtectedRoute element={<ListaAlumnos />} isAuthenticatedRequired={true} isAdminRequired={true}/> },
+      { path: "inscripcion", element: <ProtectedRoute element={<InscripcionForm />} isAuthenticatedRequired={true} isAdminRequired={true}/> },
+      { path: "clase", element: <ProtectedRoute element={<ClaseForm />} isAuthenticatedRequired={true}isAdminRequired={true}/> },
+      { path: "asistencia", element: <ProtectedRoute element={<AsistenciaForm />} isAuthenticatedRequired={true}isAdminRequired={true}/> },
+      { path: "pagos/:curp/:idPago/:monto", element: <ProtectedRoute element={<PagosForm />} isAuthenticatedRequired={true}isAdminRequired={true}/> },
+      { path: "listaPagos", element: <ProtectedRoute element={<ListaPagos />} isAuthenticatedRequired={true}isAdminRequired={true}/> },
+      { path: "crearPaquete/:idClase/:horario/:curp", element: <ProtectedRoute element={<PaqueteForm />} isAuthenticatedRequired={true} isAdminRequired={true}/> },
+      { path: "listarInscripciones", element: <ProtectedRoute element={<ListaIncripciones />} isAuthenticatedRequired={true}isAdminRequired={true}/> },
+      { path: "listarPaquetes", element: <ProtectedRoute element={<ListaPaquetes />} isAuthenticatedRequired={true}isAdminRequired={true}/> },
+      { path: "editarPaquete/:curp", element: <ProtectedRoute element={<EditarPaquete />} isAuthenticatedRequired={true}/> }, 
+      { path: "leer", element: <ProtectedRoute element={<QRCodeReader />} isAuthenticatedRequired={true}isAdminRequired={true}/> },
+      { path: "credencial", element: <ProtectedRoute element={<QRCodeGenerator />} isAuthenticatedRequired={true}/> },
       
-      { path: "editarPaquete/:curp", element: <EditarPaquete /> }, 
-      { path: "leer", element: <QRCodeReader /> },
+      { path: "/home", element: <ProtectedRoute element={<HomePage />} isAuthenticatedRequired={true}/> },
+      { path: "/unauthorized", element: <ProtectedRoute element={<Unauthorized />} isAuthenticatedRequired={true}/> },
+      
+      
     ],
+    
+      
   },
-  { path: "credencial", element: <QRCodeGenerator /> },
+  { path: "login/", element: <Login /> }
   // Puedes agregar más rutas aquí si es necesario
 ]);
 
