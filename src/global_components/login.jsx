@@ -27,7 +27,7 @@ const Login = () => {
 
     try {
       // Hacer la solicitud a la API
-      const response = await axios.post( 'https://cadi.onrender.com/',{ //'http://127.0.0.1:8000/login/', {
+      const response = await axios.post( 'https://cadi.onrender.com/login/',{ //'http://127.0.0.1:8000/login/', {
         username: email,
         password: password,
       });
