@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Alumno, Inscripcion, Asistencia 
 from clases.models import Clase
+from clases.serializers import DatoClaseSerializer
 
  
 class AlumnoSerializer(serializers.ModelSerializer):
@@ -48,3 +49,9 @@ class InscripcionClaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Inscripcion
         fields = ['idInscripcion', 'idClase']
+        
+class InscripcionAlumnoSerializer(serializers.ModelSerializer):
+    clase = DatoClaseSerializer(source='idClase')
+    class Meta:
+        model = Inscripcion
+        fields = ['idInscripcion','horario','fechaInscripcion','clase']

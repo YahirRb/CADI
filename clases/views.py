@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from .models import Clase,Paquete,PaqueteClases
 from .serializers import ClaseSerializer,PaqueteClasesSerializer,PaqueteSerializer
 from alumnos.models import Inscripcion
-from alumnos.serializers import InscripcionSerializer
+from alumnos.serializers import InscripcionSerializer,InscripcionAlumnoSerializer
 from pagos.serializers import PagoSerializer
 
 class RegistrarClase(APIView):
@@ -236,3 +236,14 @@ class EliminarClaseDelPaquete(APIView):
             return Response({"error": "Paquete no encontrado"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class ObtenerClasesPorCurp(APIView):
+    def get(self, request, *args, **kwargs):
+        # Filtra inscripciones por CURP
+        curp= request.GET.get('curp')
+        print(curp)
+        inscripciones = Inscripcion.objects.filter(curp=curp) 
+        # Obtiene las clases asociadas a las inscripciones 
+
+        serializer = InscripcionAlumnoSerializer(inscripciones, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -23,3 +23,4 @@ class DatoClaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Clase
         fields = ['idClase','nombre']
+        
