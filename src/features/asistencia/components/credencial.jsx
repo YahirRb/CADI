@@ -4,9 +4,8 @@ import { useInscripcion } from '../../inscripcion/hooks/useInscripcion';
 import { useRegistroAsistencia } from '../../asistencia/hooks/useAsistencia'; 
 import { useStudent } from '../../alumnos/hooks/useAlumno'; 
 import { toPng } from 'html-to-image'; 
-import { Button, Modal, Typography,CircularProgress, Input } from '@mui/material'; 
+import { Button, Modal, Typography, CircularProgress, Input } from '@mui/material'; 
 import DownloadIcon from '@mui/icons-material/Download'; 
-
 import useAuth from '../../../state/SesionState'; 
 import './credencial.css';
 
@@ -14,20 +13,15 @@ const QRCodeTemplate = () => {
   const { username } = useAuth();
   const { inscripcion, listarInscripcionPorCurp, loading: inscripcionLoading, error: inscripcionError } = useInscripcion();
   const { buscarAlumno, loading: studentLoading, error: studentError } = useStudent();
-  const { obtenerFoto,registrarFoto, fotoUrl, loading: fotoLoading, error: fotoError } = useRegistroAsistencia(); 
+  const { obtenerFoto, registrarFoto, fotoUrl, loading: fotoLoading, error: fotoError } = useRegistroAsistencia(); 
 
   const [qrData, setQrData] = useState(null);
   const [alumno, setAlumno] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false); // Estado para el modal
+  const [modalOpen, setModalOpen] = useState(false); 
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isPhotoUploaded, setIsPhotoUploaded] = useState(false); // Nuevo estado para manejar la subida de la foto
   
-  const curp = username; // Cambia esto por la CURP real
-
-  useEffect(() => {
-    if (curp) {
-      obtenerFoto(curp);
-    }
-  }, [curp]);
+  const curp = username; 
 
   useEffect(() => {
     if (curp) {
@@ -50,14 +44,30 @@ const QRCodeTemplate = () => {
   }, [inscripcion, alumno]); 
 
   useEffect(() => {
-    if (fotoError) {
-      setModalOpen(true); // Abre el modal si hay un error al obtener la foto
+    if (alumno && !alumno.foto) {
+      setModalOpen(true);
     }
-  }, [fotoError]);
+  }, [alumno]);
 
+  useEffect(() => {
+    if (curp) {
+      obtenerFoto(curp);
+    }
+  }, [curp]);
+
+  // useEffect para obtener datos del alumno después de subir la foto
+  useEffect(() => {
+    if (isPhotoUploaded && alumno && alumno.foto !== null) {
+      buscarAlumno(curp).then(data => {
+        setAlumno(data);
+        setIsPhotoUploaded(false); // Resetea el estado
+      });
+    }
+  }, [isPhotoUploaded, curp, alumno]);
+  
   if (inscripcionLoading || studentLoading || fotoLoading) 
     return <CircularProgress />;
-  
+
   if (inscripcionError || studentError) {
     const errorMessage = inscripcionError?.message || studentError?.message || "Ocurrió un error inesperado.";
     return <p>Error: {errorMessage}</p>;
@@ -87,23 +97,20 @@ const QRCodeTemplate = () => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setSelectedFile(file); // Previsualización de la imagen
+      setSelectedFile(file); 
     }
   };
 
   const handleUpload = async () => {
-    // Aquí iría la lógica para subir la foto
     if (selectedFile) {
-      const file = selectedFile;// Asegúrate de usar la CURP real aquí
-  
       try {
-        const result = await registrarFoto(curp, file);
-        console.log("Foto guardada con éxito:", result);
-        // Aquí puedes añadir lógica adicional, como cerrar el modal o mostrar un mensaje de éxito
+        await registrarFoto(curp, selectedFile);
+        console.log("Foto guardada con éxito");
+        setIsPhotoUploaded(true); // Marca la foto como subida
         handleCloseModal();
+        window.location.reload();
       } catch (error) {
         console.error("Error al subir la foto:", error);
-        // Aquí puedes mostrar un mensaje de error al usuario si lo deseas
       }
     }
   };
@@ -149,62 +156,60 @@ const QRCodeTemplate = () => {
 
       {/* Modal para subir una foto */}
       <Modal
-  open={modalOpen}
-  onClose={() => {}} // Previene el cierre al hacer clic fuera
-  aria-labelledby="modal-title"
-  aria-describedby="modal-description"
->
-  <div className="modal-container">
-    <Typography id="modal-title" className="modal-title" component="h2">
-      Subir Foto
-    </Typography>
-    <Typography id="modal-description" className="modal-description">
-      Necesitas una fotografía para tu credencial.
-    </Typography>
-    
-    <div className="input-file-container">
-      <Button
-        variant="contained"
-        color="primary"
-        component="label"
-        className="upload-button"
+        open={modalOpen}
+        onClose={() => {}} // Previene el cierre al hacer clic fuera
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
       >
-        Subir Archivo
-        <input 
-          type="file" 
-          accept="image/*" 
-          onChange={handleFileChange} 
-          hidden
-        />
-      </Button>
-    </div>
+        <div className="modal-container">
+          <Typography id="modal-title" className="modal-title" component="h2">
+            Subir Foto
+          </Typography>
+          <Typography id="modal-description" className="modal-description">
+            Necesitas una fotografía para tu credencial.
+          </Typography>
+          
+          <div className="input-file-container">
+            <Button
+              variant="contained"
+              color="primary"
+              component="label"
+              className="upload-button"
+            >
+              Subir Archivo
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleFileChange} 
+                hidden
+              />
+            </Button>
+          </div>
 
-    {selectedFile && (
-      <div>
-        <img src={selectedFile} alt="Previsualización" className="preview-image" />
-      </div>
-    )}
+          {selectedFile && (
+            <div>
+              <img src={URL.createObjectURL(selectedFile)} alt="Previsualización" className="preview-image" />
+            </div>
+          )}
 
-    <div className="modal-actions">
-      <Button 
-        onClick={handleUpload} 
-        color="primary" 
-        className="modal-button"
-      >
-        Subir Foto
-      </Button>
-      <Button 
-        onClick={handleCloseModal} 
-        color="secondary" 
-        className="modal-button"
-      >
-        Cerrar
-      </Button>
-    </div>
-  </div>
-</Modal>
-
-
+          <div className="modal-actions">
+            <Button 
+              onClick={handleUpload} 
+              color="primary" 
+              className="modal-button"
+            >
+              Subir Foto
+            </Button>
+            <Button 
+              onClick={handleCloseModal} 
+              color="secondary" 
+              className="modal-button"
+            >
+              Cerrar
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
