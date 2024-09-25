@@ -47,7 +47,7 @@ export default function MenuBanner() {
         <span
           className="identificador"
           onClick={() => {
-            nav("/home");
+            nav("/");
           }}
         >
           <img className="logo" src="../../public/foto.png" alt="Logo" />

@@ -43,7 +43,7 @@ const Login = () => {
 
       // Guardar los tokens y el estado de isAdmin usando Zustand
       setTokens(response.data.access, response.data.refresh, isAdmin,curp);
-      navigate('/home');
+      navigate('/');
       // Aquí puedes redirigir al usuario o hacer otras acciones
     } catch (error) {
       // Manejar el error

@@ -59,8 +59,8 @@ import axios from 'axios';
 
 // Configura una instancia de axios con la URL base de tu API Django
 const apiClient = axios.create({
-  //baseURL: 'http://127.0.0.1:8000',
-  baseURL: 'https://cadi.onrender.com/', // URL base de tu API Django
+  baseURL: 'http://127.0.0.1:8000',
+  //baseURL: 'https://cadi.onrender.com/', // URL base de tu API Django
   headers: {
     'Content-Type': 'application/json',
   },

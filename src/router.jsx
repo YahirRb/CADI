@@ -38,7 +38,7 @@ const router = createBrowserRouter([
       { path: "leer", element: <ProtectedRoute element={<QRCodeReader />} isAuthenticatedRequired={true}isAdminRequired={true}/> },
       { path: "credencial", element: <ProtectedRoute element={<QRCodeGenerator />} isAuthenticatedRequired={true}/> },
       
-      { path: "/home", element: <ProtectedRoute element={<HomePage />} isAuthenticatedRequired={true}/> },
+      { path: "/", element: <ProtectedRoute element={<HomePage />} isAuthenticatedRequired={true}/> },
       { path: "/unauthorized", element: <ProtectedRoute element={<Unauthorized />} isAuthenticatedRequired={true}/> },
       
       

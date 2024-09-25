@@ -8,7 +8,7 @@ const Unauthorized = () => {
     <div className="unauthorized-container">
       <h1>Acceso No Autorizado</h1>
       <p>Lo siento, no tienes permiso para acceder a esta página.</p>
-      <Link to="./home">Volver a la página principal</Link>
+      <Link to="./">Volver a la página principal</Link>
     </div>
   );
 };
