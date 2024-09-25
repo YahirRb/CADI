@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Pago
-from .serializers import PagoSerializer,PagosPorVencer
+from .serializers import PagoSerializer,PagosPorVencer,PagosConDetallesSerializer
 from alumnos.models import Alumno
 from alumnos.serializers import AlumnoSerializer
 from .notificaciones.notificaciones import enviar_notificacion_a_alumno
@@ -20,7 +20,7 @@ class RegistrarPago(APIView):
     def post(self, request, *args, **kwargs):
         # Obtener el ID del pago a realizar desde la solicitud
         id_pago = request.data.get('idPago')
-        
+        print(id_pago)
         try:
             # Buscar el pago existente
             pago_existente = Pago.objects.get(idPago=id_pago)
@@ -110,7 +110,7 @@ class PagosPorVencerList(APIView):
         # Filtrar los pagos que están a 0, 1, 3 o 5 días de vencer
         pagos_por_vencer = Pago.objects.filter(
             proximo_pago__in=fechas_vencimiento,
-            pago_realizado__isnull=True  # Filtrar pagos que no han sido realizados
+            estatus='pendiente'  # Filtrar pagos que no han sido realizados
         )
 
         mensajes = []
@@ -137,13 +137,12 @@ class PagosPorVencerList(APIView):
 
 class PagosPendientesList(APIView):
 
-    def get(self, request):
-        curp=request.GET.get('curp')
+    def get(self, request): 
         # Filtrar los pagos que no han sido realizados
-        pagos_pendientes = Pago.objects.filter(estatus='pendiente',curp=curp)
+        pagos_pendientes = Pago.objects.filter(estatus='pendiente')
 
         # Serializar los pagos
-        serializer = PagoSerializer(pagos_pendientes, many=True)
+        serializer = PagosConDetallesSerializer(pagos_pendientes, many=True)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
     

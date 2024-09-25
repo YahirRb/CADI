@@ -19,7 +19,7 @@ class AlumnoCreate(APIView):
         alumno_data = request.data.get('alumno')
         pago_data = request.data.get('pago')  # Datos generales del pago
         inscripciones_data = request.data.get('inscripciones')
-
+        print(pago_data)
         serializerAlumno = AlumnoSerializer(data=alumno_data)
 
         if serializerAlumno.is_valid():
@@ -95,9 +95,8 @@ class AlumnoCreate(APIView):
                             'idInscripcion': id_inscripcion,
                             'curp': alumno.curp,
                             'monto': costo_clase,  # El monto es el costo de la clase extraído del modelo Clase
-                            'fecha_pago': pago_data['fecha_pago'],  # Fecha de pago
-                            'pago_realizado': pago_data['pago_realizado'],  # Indicador si el pago fue realizado
-                            'estatus': pago_data['estatus'],  # Estatus del pago
+                            'fecha_pago': pago_data['fecha_pago'],  # Fecha de pago 
+                            'estatus': 'pendiente',  # Estatus del pago
                             'motivo': pago_data['motivo'],  # Motivo del pago
                             'proximo_pago': pago_data['proximo_pago'],  # Próxima fecha de pago
                         }
@@ -279,6 +278,11 @@ class VerificarInscripcionAPIView(APIView):
         # Verificar si el alumno existe
         try:
             alumno = Alumno.objects.get(curp=curp)
+            image_path = alumno.foto
+
+            # Define la ruta del archivo en Supabase
+            source = f"https://hzgjuagwofztyqtsvrgt.supabase.co/storage/v1/object/public/cadi/{image_path}"
+            print(source)
         except Alumno.DoesNotExist:
             return Response({"error": "Alumno no encontrado."}, status=status.HTTP_404_NOT_FOUND)
 
@@ -347,7 +351,12 @@ class VerificarInscripcionAPIView(APIView):
 
             mensajes.append({"idInscripcion": inscripcion.idInscripcion, "mensaje": mensaje})
 
-        return Response(mensajes, status=status.HTTP_200_OK)
+        response_data = {
+            "source": source,
+            "mensajes": mensajes
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
     
     
  

@@ -37,3 +37,14 @@ class AlumnoFotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alumno
         fields = ['curp', 'foto']  # Incluye solo los campos necesarios
+        
+
+class AlumnoNombreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alumno
+        fields = ['curp', 'nombre','apellidos']
+        
+class InscripcionClaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Inscripcion
+        fields = ['idInscripcion', 'idClase']

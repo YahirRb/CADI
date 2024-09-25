@@ -17,3 +17,9 @@ class PaqueteClasesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaqueteClases
         fields = '__all__'
+        
+class DatoClaseSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Clase
+        fields = ['idClase','nombre']
