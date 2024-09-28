@@ -1,0 +1,11 @@
+@media (max-width: 340px) {
+  .login-input > div{
+    font-size: 1rem;
+  }
+}
+
+@media (max-height: 380px) {
+  .login-input > div{
+    font-size: 1rem;
+  }
+}

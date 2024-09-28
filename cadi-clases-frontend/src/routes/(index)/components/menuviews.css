@@ -1,0 +1,5 @@
+@media (max-width: 520px) {
+  .bottom-navbar-student > button {
+    max-width: 100px;
+  }
+}
